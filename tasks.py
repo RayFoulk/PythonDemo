@@ -57,4 +57,3 @@ def all(context):
     Run all tasks other than clean
     """
     pass
-
