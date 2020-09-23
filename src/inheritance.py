@@ -28,33 +28,38 @@ class GrandParent(ABC):
         return False
 
 
-class BadParentA(GrandParent, ABC):
+# PyCharm IDE does not pick up that this class does not implement all abstract
+# methods.  The multiple inheritance from ABC is directly related to this.
+# TODO: It is unclear (to me) if this is by design or intentional.
+class InvalidParentMultiple(GrandParent, ABC):
     """
     Class derived from grandparent, also itself an ABC for demo purposes.
     Note that this does not even implement some_method() as it should
     """
 
     def __init__(self) -> None:
-        super(BadParentA, self).__init__()
+        super(InvalidParentMultiple, self).__init__()
 
 
-class BadParentB(GrandParent):
+# PyCharm IDE properly picks up that this class does not implement all abstract
+# methods
+class InvalidParentSingle(GrandParent):
     """
     Class derived from grandparent, also itself an ABC for demo purposes.
     Note that this does not even implement some_method() as it should
     """
 
     def __init__(self) -> None:
-        super(BadParentB, self).__init__()
+        super(InvalidParentSingle, self).__init__()
 
 
-class GoodParent(GrandParent):
+class ValidParent(GrandParent):
     """
     Class derived from grandparent, also itself an ABC for demo purposes
     """
 
     def __init__(self) -> None:
-        super(GoodParent, self).__init__()
+        super(ValidParent, self).__init__()
 
     def some_method(self,
                     name: str,
@@ -72,21 +77,23 @@ class GoodParent(GrandParent):
         return True
 
 
-class ChildA(BadParentA):
+class IncompatibleChildA(InvalidParentMultiple):
     """
     Child class that implements final some_method one way
     """
 
     def __init__(self) -> None:
-        super(ChildA, self).__init__()
+        super(IncompatibleChildA, self).__init__()
 
     def some_method(self,
                     house: int,
                     mouse: int,
                     *,
-                    cheese: str = 'cheddar') -> int:
+                    cheese: str = 'Cheddar') -> int:
         """
         A completely different implementation of some_method()
+        Mypy correctly complains about this as expected,
+        but it is allowed at runtime.
 
         :param house: A house
         :param mouse: A mouse
@@ -97,22 +104,24 @@ class ChildA(BadParentA):
         return True
 
 
-class ChildB(BadParentA):
+class IncompatibleChildB(InvalidParentMultiple):
     """
     Child class that implements final some_method another way
     """
 
     def __init__(self) -> None:
-        super(ChildB, self).__init__()
+        super(IncompatibleChildB, self).__init__()
 
     def some_method(self,
                     man: str,
                     plan: str,
                     canal: str,
                     *,
-                    country: str = 'panama') -> str:
+                    country: str = 'Panama') -> str:
         """
         A completely different implementation of some_method()
+        Mypy correctly complains about this as expected,
+        but it is allowed at runtime.
 
         :param man: A man
         :param plan: A plan
@@ -122,4 +131,3 @@ class ChildB(BadParentA):
         """
         print(f'Man: {man}  Plan: {plan}  Canal: {canal}  Country: {country}')
         return 'some_string'
-

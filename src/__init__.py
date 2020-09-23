@@ -3,16 +3,17 @@ from typing import (
 )
 from .inheritance import (
     GrandParent,
-    BadParentA,
-    BadParentB,
-    ChildA,
-    ChildB,
+    InvalidParentMultiple,
+    InvalidParentSingle,
+    IncompatibleChildA,
+    IncompatibleChildB,
+
 )
 
 __all__: List[str] = [
     'GrandParent',
-    'BadParentA',
-    'BadParentB',
-    'ChildA',
-    'ChildB',
+    'InvalidParentMultiple',
+    'InvalidParentSingle',
+    'IncompatibleChildA',
+    'IncompatibleChildB',
 ]
