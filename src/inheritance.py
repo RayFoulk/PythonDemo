@@ -30,6 +30,8 @@ class GrandParent(ABC):
 
 # PyCharm IDE does not pick up that this class does not implement all abstract
 # methods.  The multiple inheritance from ABC is directly related to this.
+# Warning in PyCharm goes away when either: InvalidParent(GrandParent, ABC)
+# OR: InvalidParent(ABC, GrandParent)
 class InvalidParent(GrandParent):
     """
     Class derived from grandparent
