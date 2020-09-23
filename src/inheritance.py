@@ -6,7 +6,9 @@ from abc import (
     ABC,
     abstractmethod,
 )
-
+from typing import (
+    Any
+)
 logging.basicConfig(filename='')
 
 
@@ -19,7 +21,9 @@ class GrandParent(ABC):
         self._private_value = 1
 
     @abstractmethod
-    def base_method(self, data: bytes) -> bool:
+    def base_method(self,
+                    data: bytes,
+                    **kwargs: Any) -> bool:
         """
         Signature low-level method
 
@@ -83,7 +87,7 @@ class ChildA(Parent):
                     data: bytes,
                     *,
                     option_a: bool = True,
-                    **kwargs) -> bool:
+                    **kwargs: Any) -> bool:
         """
         Establish the signature for a method in the base class
 
@@ -109,7 +113,7 @@ class ChildB(Parent):
                     *,
                     option_b: str = 'something',
                     option_c: int = 0,
-                    **kwargs) -> bool:
+                    **kwargs: Any) -> bool:
         """
         Establish the signature for a method in the base class
 
