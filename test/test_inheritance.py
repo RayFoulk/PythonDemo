@@ -1,7 +1,8 @@
+import os
 import pytest
 from src.inheritance import (
     GrandParent,
-    InvalidParent,
+    Parent,
     ChildA,
     ChildB,
 )
@@ -15,10 +16,10 @@ def test_inheritance_quirks():
 
     # Neither this, because it does not implement some_method
     with pytest.raises(TypeError):
-        InvalidParent()
+        Parent()
 
     childa = ChildA()
-    childa.some_method('one', 'two', 3, option_a='test')
+    childa.higher_method(os.urandom(64), option_a=False)
 
     childb = ChildB()
-    childb.some_method('four', 'five', 6, option_b=7)
+    childb.higher_method(os.urandom(64), option_b='something_else', option_c=7)

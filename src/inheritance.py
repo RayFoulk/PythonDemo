@@ -1,7 +1,13 @@
+import logging
+from hexdump import (
+    hexdump
+)
 from abc import (
     ABC,
     abstractmethod,
 )
+
+logging.basicConfig(filename='')
 
 
 class GrandParent(ABC):
@@ -13,36 +19,59 @@ class GrandParent(ABC):
         self._private_value = 1
 
     @abstractmethod
-    def some_method(self,
-                    name: str,
-                    rank: str,
-                    serial: int) -> bool:
+    def base_method(self, data: bytes) -> bool:
         """
-        Establish the signature for a method in the base class
+        Signature low-level method
 
-        :param name: Name
-        :param rank: Rank
-        :param serial: Serial Number
+        :param data: Some data to transmit
         :return: True for success, False for failure
         """
         return False
 
+    @abstractmethod
+    def higher_method(self, data: bytes) -> bool:
+        """
+        Signature higher level
 
-# PyCharm IDE does not pick up that this class does not implement all abstract
-# methods.  The multiple inheritance from ABC is directly related to this.
-# Warning in PyCharm goes away when either: InvalidParent(GrandParent, ABC)
-# OR: InvalidParent(ABC, GrandParent)
-class InvalidParent(GrandParent):
+        :param data: Some data to transmit
+        :return: True for success, False for failure
+        """
+
+
+class Parent(GrandParent, ABC):
     """
     Class derived from grandparent
-    Note that this does not even implement some_method() as it should
     """
 
     def __init__(self) -> None:
-        super(InvalidParent, self).__init__()
+        super(Parent, self).__init__()
+
+    def higher_method(self,
+                      data: bytes,
+                      *,
+                      option_a: bool = True,
+                      option_b: str = 'something',
+                      option_c: int = 0) -> bool:
+        """
+        Final implementation of higher method used by either ChildA or ChildB
+
+        :param data: Some data to transmit
+        :param option_a: Some option that only ChildA
+        :param option_b: Some option that only ChildB
+        :param option_c: Some option that only ChildB
+        :return: True for success, False for failure
+        """
+        self.base_method(data,
+                         option_a=option_a,
+                         option_b=option_b,
+                         option_c=option_c)
+
+        # dumpstr = hexdump(data, result='return')
+        # logging.debug(f'data: \n\n{dumpstr}\n\n')
+        return True
 
 
-class ChildA(InvalidParent):
+class ChildA(Parent):
     """
     Child class that implements final some_method one way
     """
@@ -50,25 +79,24 @@ class ChildA(InvalidParent):
     def __init__(self) -> None:
         super(ChildA, self).__init__()
 
-    def some_method(self,
-                    name: str,
-                    rank: str,
-                    serial: int,
+    def base_method(self,
+                    data: bytes,
                     *,
-                    option_a: str = 'Nothing') -> bool:
+                    option_a: bool = True,
+                    **kwargs) -> bool:
         """
         Establish the signature for a method in the base class
 
-        :param name: Name
-        :param rank: Rank
-        :param serial: Serial Number
-        :param option_a: Some option that only ChildA uses
+        :param data: Some data to transmit
+        :param option_a: Some option that only ChildA
         :return: True for success, False for failure
         """
+        dumpstr = hexdump(data, result='return')
+        logging.debug(f'data: \n\n{dumpstr}\n\n')
         return True
 
 
-class ChildB(InvalidParent):
+class ChildB(Parent):
     """
     Child class that implements final some_method another way
     """
@@ -76,19 +104,20 @@ class ChildB(InvalidParent):
     def __init__(self) -> None:
         super(ChildB, self).__init__()
 
-    def some_method(self,
-                    name: str,
-                    rank: str,
-                    serial: int,
+    def base_method(self,
+                    data: bytes,
                     *,
-                    option_b: int = -1) -> bool:
+                    option_b: str = 'something',
+                    option_c: int = 0,
+                    **kwargs) -> bool:
         """
         Establish the signature for a method in the base class
 
-        :param name: Name
-        :param rank: Rank
-        :param serial: Serial Number
-        :param option_b: Some option that only ChildB uses
+        :param data: Some data to transmit
+        :param option_b: Some option that only ChildB
+        :param option_c: Some option that only ChildB
         :return: True for success, False for failure
         """
+        dumpstr = hexdump(data, result='return')
+        logging.debug(f'data: \n\n{dumpstr}\n\n')
         return True

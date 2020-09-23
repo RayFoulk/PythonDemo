@@ -37,7 +37,7 @@ def pytest(context, pty=True):
         # things moving forward.
         # TODO: Organize the project properly so this is no longer necessary.
         os.environ["PYTHONPATH"] = ROOT_PATH_STR
-        context.run('pytest', pty=pty)
+        context.run('pytest --log-cli-level=DEBUG', pty=pty)
 
 
 @task()
