@@ -1,5 +1,5 @@
 import logging
-from hexdump import (
+from hexdump import (       # type: ignore
     hexdump
 )
 from abc import (
@@ -40,6 +40,18 @@ class GrandParent(ABC):
         :param data: Some data to transmit
         :return: True for success, False for failure
         """
+        return False
+
+    @abstractmethod
+    def anything_method(self, *args: Any, **kwargs: Any) -> bool:
+        """
+        Function that all children must implement, but with any signature
+
+        :param args:
+        :param kwargs:
+        :return:
+        """
+        return False
 
 
 class Parent(GrandParent, ABC):
@@ -72,6 +84,26 @@ class Parent(GrandParent, ABC):
 
         # dumpstr = hexdump(data, result='return')
         # logging.debug(f'data: \n\n{dumpstr}\n\n')
+        return True
+
+    def anything_method(self,
+                        arg1: str,
+                        arg2: str,
+                        arg3: int,
+                        *,
+                        kwarg1: str = 'one',
+                        kwarg2: str = 'two',
+                        **kwargs: Any) -> bool:
+        """
+        Parent implements this however is appropriate
+        :param arg1: Whatever
+        :param arg2: I
+        :param arg3: Feel
+        :param kwarg1: Like
+        :param kwarg2: Implementing
+        :param kwargs: Here
+        :return:
+        """
         return True
 
 
