@@ -42,16 +42,20 @@ class GrandParent(ABC):
         """
         return False
 
-    @abstractmethod
-    def anything_method(self, *args: Any, **kwargs: Any) -> bool:
-        """
-        Function that all children must implement, but with any signature
+    # https://github.com/python/mypy/issues/5364
+    # https://stackoverflow.com/questions/51003146/
+    #     python-3-6-signature-of-method-incompatible-with-super-type-class
 
-        :param args:
-        :param kwargs:
-        :return:
-        """
-        return False
+    # @abstractmethod
+    # def anything_method(self, *args: Any, **kwargs: Any) -> bool:
+    #     """
+    #     Function that all children must implement, but with any signature
+    #
+    #     :param args:
+    #     :param kwargs:
+    #     :return:
+    #     """
+    #     return False
 
 
 class Parent(GrandParent, ABC):
